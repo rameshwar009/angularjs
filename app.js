@@ -1,23 +1,36 @@
 (function (){
-  'use strict';
-  var x = 'hello';
-  angular.module('NameCalculator', [])
-  .controller('NameCalculatorController', function ($scope){
-    $scope.name = '';
-    $scope.totalValue = 0;
+  angular.module('LunchCheck', [])
+  .controller('LunchCheckController', function ($scope){
+    $scope.lunchItems = '';
+    $scope.message = '';
 
-    $scope.displayNumeric = function (){
-      var totalNameValue = calculateNumericForString($scope.name);
-      $scope.totalValue = totalNameValue;
-    };
-
-    function calculateNumericForString(string){
-      var totalStringValue = 0;
-      for(var i = 0; i < string.length; i++){
-        totalStringValue += string.charCodeAt(i);
+    $scope.checkIfTooMuch = function (){
+      var nonEmptyLunchItems = getNumberOfLunchItems($scope.lunchItems)
+      if (nonEmptyLunchItems == 0){
+        $scope.message = 'Empty';
       }
-      return totalStringValue;
-    }
-
+      else if (nonEmptyLunchItems > 3){
+        $scope.message = 'Too much';
+      }
+      else {
+        $scope.message = 'Enjoy!!'
+      }
+    };
   });
+
+  // Getting Number of Non Empty Lunch items
+  function getNumberOfLunchItems (lunchitems){
+    var lunchItemsArray = lunchitems.split(',')
+    var totalLunchItems = lunchItemsArray.length
+
+    for (var i=0; i< totalLunchItems; i++){
+      if (!lunchItemsArray[i]) {
+          lunchItemsArray.pop(i);
+      }
+    }
+    var realLunchItems = lunchItemsArray.length
+    return realLunchItems
+  };
+
+
 })();
